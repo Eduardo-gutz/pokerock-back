@@ -2,6 +2,7 @@ import { GenderDTO } from './gender.dto';
 import { TrackListDTO } from './trackList.dto';
 
 export interface AlbumDTO {
+  id?: number;
   name: string;
   relase: string;
   recorder: string;
@@ -9,7 +10,7 @@ export interface AlbumDTO {
   producer: string;
   label: string;
   length: number;
-  genders: GenderDTO;
+  genders: GenderDTO[];
   track_list: TrackListDTO[];
   bref: string;
 }
