@@ -10,7 +10,7 @@ import {
 import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 import { AlbumService } from 'src/services/album/album.service';
 import { ArtistService } from 'src/services/artist/artist.service';
-import { GenderService } from 'src/services/gender.service';
+import { GenderService } from 'src/services/gender/gender.service';
 import { SongService } from 'src/services/song/song.service';
 import { TracklistService } from 'src/services/tracklist/tracklist.service';
 import { BandService } from '../services/band.service';
@@ -46,7 +46,7 @@ export class BandController {
         };
       }
 
-      const savedSong = await this.songService.saveSong(song);
+      const savedSong = await this.songService.createSong(song);
 
       return {
         id: savedSong.id,
@@ -75,7 +75,7 @@ export class BandController {
         songs,
       };
 
-      const savedTL = await this.tracklistService.saveTracklist(tlToSave);
+      const savedTL = await this.tracklistService.createTracklist(tlToSave);
 
       return {
         id: savedTL.id,
@@ -106,7 +106,7 @@ export class BandController {
         genders,
       };
 
-      const savedAlbum = this.albumService.saveAlbum(albumToSave);
+      const savedAlbum = await this.albumService.createAlbum(albumToSave);
 
       return {
         id: savedAlbum.id,
@@ -136,7 +136,7 @@ export class BandController {
         othersBands: [],
       };
 
-      const artistSaved = await this.artistService.saveArtist(memberToSave);
+      const artistSaved = await this.artistService.createArtist(memberToSave);
       return {
         id: artistSaved.id,
         name: artistSaved.name,
@@ -147,7 +147,7 @@ export class BandController {
     return await Promise.all(savedMembers);
   }
 
-  private async saveGenders(genders: GenderDTO[]) {
+  private async saveGenders(genders: GenderDTO[]): Promise<IEndpoint[]> {
     const savedGenders = genders.map(async (gender) => {
       if (gender.id) {
         return {
@@ -156,7 +156,21 @@ export class BandController {
           endpoint: `/gender/${gender.id}`,
         };
       }
-      const genderSaved = await this.genderService.saveNewGender(gender);
+
+      const genderExist = await this.genderService.readGenderByName(
+        gender.name,
+      );
+
+      if (genderExist) {
+        return {
+          id: genderExist.id,
+          name: genderExist.name,
+          endpoint: `/gender/${genderExist.id}`,
+        };
+      }
+
+      const genderSaved = await this.genderService.createGender(gender);
+
       return {
         id: genderSaved.id,
         name: genderSaved.name,
@@ -164,7 +178,7 @@ export class BandController {
       };
     });
 
-    return await Promise.all(savedGenders);
+    return (await Promise.all(savedGenders)) as IEndpoint[];
   }
 
   @Post()

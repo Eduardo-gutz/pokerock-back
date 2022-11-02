@@ -1,3 +1,4 @@
+import { Document } from 'mongoose';
 import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 import { TimelineDTO } from '../dto/timeline.dto';
 
@@ -17,3 +18,5 @@ export interface IArtist {
   timeline: TimelineDTO[];
   discography: IEndpoint[];
 }
+
+export interface IArtistDoc extends Omit<IArtist, 'id'>, Document {}

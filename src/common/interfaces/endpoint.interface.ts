@@ -1,5 +1,5 @@
 export interface IEndpoint {
-  id: number;
+  id: string;
   name: string;
   endpoint: string;
 }

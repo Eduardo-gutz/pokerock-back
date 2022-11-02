@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 
 export interface IBand {
-  id?: number;
+  id?: string;
   name: string;
   summary: string;
   origin: string;

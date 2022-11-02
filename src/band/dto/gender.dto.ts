@@ -1,5 +1,5 @@
 export interface GenderDTO {
-  id?: number;
+  id?: string;
   name: string;
   bref: string;
 }

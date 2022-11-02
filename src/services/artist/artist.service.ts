@@ -1,18 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { IArtist } from 'src/band/interfaces/artist.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { IArtist, IArtistDoc } from 'src/band/interfaces/artist.interface';
 
 @Injectable()
 export class ArtistService {
-  private artists: IArtist[] = [];
+  constructor(@InjectModel('Artist') private artistModel: Model<IArtistDoc>) {}
 
-  saveArtist(artist: IArtist) {
-    const newArtist = {
-      ...artist,
-      id: this.artists.length + 1,
-    };
-
-    this.artists.push(newArtist);
-
-    return newArtist;
+  async createArtist(artist: IArtist) {
+    const newArtist = new this.artistModel(artist);
+    return await newArtist.save();
   }
 }

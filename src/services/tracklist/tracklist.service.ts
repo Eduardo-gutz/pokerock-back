@@ -1,18 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { ITrackList } from 'src/band/interfaces/tracklist.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  ITrackList,
+  ITrackListDoc,
+} from 'src/band/interfaces/tracklist.interface';
 
 @Injectable()
 export class TracklistService {
-  private tracklist: ITrackList[] = [];
+  constructor(
+    @InjectModel('Tracklist') private tracklistModel: Model<ITrackListDoc>,
+  ) {}
 
-  saveTracklist(trackList: ITrackList) {
-    const newTracklist = {
-      ...trackList,
-      id: this.tracklist.length + 1,
-    };
-
-    this.tracklist.push(newTracklist);
-
-    return newTracklist;
+  createTracklist(trackList: ITrackList) {
+    const newTracklist = new this.tracklistModel(trackList);
+    return newTracklist.save();
   }
 }

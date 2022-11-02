@@ -1,34 +1,35 @@
 import { Schema } from 'mongoose';
 
-export const BandSchema = new Schema({
+export const ArtistSchema = new Schema({
   name: String,
-  summary: String,
-  origin: String,
+  artistName: String,
+  birthDate: Number,
+  deathDate: Number,
+  causeDeath: String,
   startTemp: Number,
   endTemp: Number,
-  toPresent: Boolean,
+  instruments: [String],
+  roles: [String],
+  mainBand: {
+    id: String,
+    name: String,
+    endpoint: String,
+  },
+  othersBands: [
+    {
+      id: String,
+      name: String,
+      endpoint: String,
+    },
+  ],
+  timeline: [
+    {
+      id: String,
+      name: String,
+      endpoint: String,
+    },
+  ],
   discography: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
-  genders: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
-  members: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
-  pastMembers: [
     {
       id: String,
       name: String,
