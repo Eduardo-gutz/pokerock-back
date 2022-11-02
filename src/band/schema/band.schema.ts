@@ -14,7 +14,7 @@ export const BandSchema = new Schema({
       endpoint: String,
     },
   ],
-  genders: [
+  genres: [
     {
       id: String,
       name: String,

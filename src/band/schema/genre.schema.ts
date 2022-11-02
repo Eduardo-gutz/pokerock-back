@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export const GenderSchema = new Schema({
+export const GenreSchema = new Schema({
   name: String,
   bref: String,
 });

@@ -11,7 +11,7 @@
 |   |- Discografia { Interface de Dicografia }[]
 |- Origen
 |- Generos
-|   |- Gender { Interface de Genero }[]
+|   |- Genre { Interface de Genero }[]
 |- Temporada
 |- Integrantes Pasados
 |   |- Artista { Interface de Artista }[]
@@ -123,26 +123,26 @@
         }
     ],
     "origin": "Los Angeles, California, U.S.",
-    "genders": [
+    "genres": [
         {
             "id": 1,
             "name": "Funk Rock",
-            "endpoint": "/gender/1"
+            "endpoint": "/genre/1"
         },
         {
             "id": 2,
             "name": "Alternative Rock",
-            "endpoint": "/gender/2"
+            "endpoint": "/genre/2"
         },
         {
             "id": 3,
             "name": "Funk Metal",
-            "endpoint": "/gender/3"
+            "endpoint": "/genre/3"
         },
         {
             "id": 4,
             "name": "Rap Rock",
-            "endpoint": "/gender/4"
+            "endpoint": "/genre/4"
         }
     ],
     "yearsActive": {

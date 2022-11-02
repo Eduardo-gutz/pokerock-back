@@ -8,7 +8,7 @@ export const AlbumSchema = new Schema({
   producer: String,
   label: String,
   length: Number,
-  genders: [
+  genres: [
     {
       id: String,
       name: String,

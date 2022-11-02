@@ -10,7 +10,7 @@ export interface IBand {
   endTemp: number;
   toPresent: boolean;
   discography: IEndpoint[];
-  genders: IEndpoint[];
+  genres: IEndpoint[];
   members: IEndpoint[];
   pastMembers: IEndpoint[];
 }

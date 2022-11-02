@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BandModule } from './band/band.module';
-import { GenderController } from './gender/gender.controller';
-import { GenderModule } from './gender/gender.module';
+import { GenreController } from './genre/genre.controller';
+import { GenreModule } from './genre/genre.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     BandModule,
-    GenderModule,
+    GenreModule,
     MongooseModule.forRoot('mongodb://localhost/bands'),
   ],
-  controllers: [AppController, GenderController],
+  controllers: [AppController, GenreController],
   providers: [AppService],
 })
 export class AppModule {}
