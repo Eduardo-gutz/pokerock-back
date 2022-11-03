@@ -1,38 +1,20 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AlbumService } from 'src/services/album/album.service';
-import { ArtistService } from 'src/services/artist/artist.service';
-import { GenreService } from 'src/services/genre/genre.service';
-import { SongService } from 'src/services/song/song.service';
-import { TracklistService } from 'src/services/tracklist/tracklist.service';
-import { BandService } from '../services/band.service';
+import { BandService } from './band.service';
 import { BandController } from './band.controller';
-import { AlbumSchema } from './schema/album.schema';
-import { ArtistSchema } from './schema/artist.schema';
 import { BandSchema } from './schema/band.schema';
-import { GenreSchema } from './schema/genre.schema';
-import { SongSchema } from './schema/song.schema';
-import { TracklistSchema } from './schema/tracklist.schema';
+import { ArtistModule } from 'src/artist/artist.module';
+import { GenresModule } from 'src/genres/genres.module';
+import { AlbumModule } from 'src/album/album.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'Band', schema: BandSchema },
-      { name: 'Song', schema: SongSchema },
-      { name: 'Tracklist', schema: TracklistSchema },
-      { name: 'Album', schema: AlbumSchema },
-      { name: 'Artist', schema: ArtistSchema },
-      { name: 'Genre', schema: GenreSchema },
-    ]),
+    ArtistModule,
+    GenresModule,
+    AlbumModule,
+    MongooseModule.forFeature([{ name: 'Band', schema: BandSchema }]),
   ],
-  providers: [
-    BandService,
-    GenreService,
-    ArtistService,
-    SongService,
-    TracklistService,
-    AlbumService,
-  ],
+  providers: [BandService],
   controllers: [BandController],
 })
 export class BandModule {}
