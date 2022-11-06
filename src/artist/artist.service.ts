@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IArtist, IArtistDoc } from 'src/artist/entities/artist.interface';
+import { ArtistDTO } from './dto/artist.dto';
 
 @Injectable()
 export class ArtistService {
@@ -43,5 +44,25 @@ export class ArtistService {
     });
 
     return await Promise.all(savedArtists);
+  }
+
+  async readAllArtists() {
+    if (!this.artists) await this.readAllArtist();
+
+    return this.artists ?? [];
+  }
+
+  async readArtist(id: string): Promise<IArtistDoc | null> {
+    return await this.artistModel.findById(id);
+  }
+
+  async updateArtist(id: string, data: Partial<ArtistDTO>) {
+    const post = await this.artistModel.findByIdAndUpdate({ _id: id }, data, {
+      new: true,
+    });
+    if (!post) {
+      throw new NotFoundException();
+    }
+    return post;
   }
 }

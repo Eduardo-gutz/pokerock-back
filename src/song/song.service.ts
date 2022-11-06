@@ -23,12 +23,12 @@ export class SongService {
     );
   }
 
-  async createSong(song: SongDTO) {
-    const newSong = new this.songModel(song);
-    const songSaved = await newSong.save();
+  async createSong(song: SongDTO): Promise<ISong> {
+    const newSong = await this.songModel.create(song);
+    // const songSaved = await newSong.save();
 
-    this.songs?.push(songSaved);
-    return songSaved;
+    this.songs?.push(newSong);
+    return newSong;
   }
 
   async createSongs(songs: SongDTO[]): Promise<ISong[]> {
