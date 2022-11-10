@@ -7,15 +7,9 @@ import { Injectable } from '@nestjs/common';
 export class SongSaver {
   constructor(private readonly songService: SongService) {}
 
-  async saveSongList(songs: SongDTO[]): Promise<IEndpoint[]> {
+  async saveSongList(songs: SongDTO[]): Promise<string[]> {
     const savedSongs = await this.songService.createSongs(songs);
 
-    return savedSongs.map((song) => {
-      return {
-        id: song.id,
-        name: song.name,
-        endpoint: `/song/${song.id}`,
-      };
-    });
+    return savedSongs.map((song) => song.id);
   }
 }

@@ -1,6 +1,6 @@
 export interface SongDTO {
   id?: number;
-  tracklistId?: number;
+  tracklistId?: string;
   number: number;
   name: string;
   writers: string[];

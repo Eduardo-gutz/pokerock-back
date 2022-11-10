@@ -65,4 +65,28 @@ export class ArtistService {
     }
     return post;
   }
+
+  async updateArtistAlbums(id: string, albumId: string) {
+    const artist = await this.artistModel.findById(id);
+    if (!artist) {
+      throw new NotFoundException();
+    }
+
+    artist.discography = [...artist.discography, albumId];
+    artist.save();
+
+    return artist;
+  }
+
+  async patchBandsArtist(id: string, bandId: string) {
+    const artist = await this.artistModel.findById(id);
+
+    if (artist) {
+      artist.othersBands = [...(artist.othersBands ?? []), bandId];
+      artist.save();
+    } else {
+      throw new NotFoundException();
+    }
+    return artist;
+  }
 }

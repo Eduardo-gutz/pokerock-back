@@ -1,13 +1,7 @@
 import { Schema } from 'mongoose';
 
 export const TracklistSchema = new Schema({
-  albumId: Number,
+  albumId: { type: Schema.Types.ObjectId, ref: 'Album' },
   version: String,
-  songs: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
+  songs: [{ type: Schema.Types.ObjectId, ref: 'Song' }],
 });

@@ -10,18 +10,8 @@ export const ArtistSchema = new Schema({
   endTemp: Number,
   instruments: [String],
   roles: [String],
-  mainBand: {
-    id: String,
-    name: String,
-    endpoint: String,
-  },
-  othersBands: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
+  mainBand: { type: Schema.Types.ObjectId, ref: 'Band' },
+  othersBands: [{ type: Schema.Types.ObjectId, ref: 'Band' }],
   timeline: [
     {
       id: String,
@@ -29,11 +19,5 @@ export const ArtistSchema = new Schema({
       endpoint: String,
     },
   ],
-  discography: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
+  discography: [{ type: Schema.Types.ObjectId, ref: 'Album' }],
 });

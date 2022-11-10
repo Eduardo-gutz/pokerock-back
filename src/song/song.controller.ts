@@ -1,42 +1,61 @@
 import {
   Controller,
-  // Get,
+  Get,
   Post,
   Body,
-  // Patch,
-  // Param,
-  // Delete,
+  Res,
+  HttpStatus,
+  Param,
 } from '@nestjs/common';
+import { TracklistService } from 'src/tracklist/tracklist.service';
 import { SongDTO } from './dto/song.dto';
 import { SongService } from './song.service';
-// import { UpdateSongDto } from './dto/update-song.dto';
 
 @Controller('song')
 export class SongController {
-  constructor(private readonly songService: SongService) {}
+  constructor(
+    private readonly songService: SongService,
+    private readonly tracklisService: TracklistService,
+  ) {}
 
   @Post()
-  create(@Body() createSongDto: SongDTO) {
-    return this.songService.createSong(createSongDto);
+  async create(@Body() createSongDto: SongDTO, @Res() res: any) {
+    if (!createSongDto.tracklistId || createSongDto.tracklistId === '') {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        error: 'bad request',
+        messgae: 'The tracklistId Property is required to save a song',
+      });
+    }
+
+    const songSaved = await this.songService.createSong(createSongDto);
+
+    await this.tracklisService.addSongToTracklist(
+      createSongDto.tracklistId,
+      songSaved.id,
+    );
+
+    return res.status(HttpStatus.OK).json(songSaved);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.songService.findAll();
-  // }
+  @Get()
+  async findAll(@Res() res: any) {
+    const songs = await this.songService.readASongs();
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.songService.findOne(+id);
-  // }
+    return res.status(HttpStatus.OK).json(
+      songs.map((song) => ({
+        id: song.id,
+        name: song.name,
+        endpoint: `/song/${song.id}`,
+      })),
+    );
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
-  //   return this.songService.update(+id, updateSongDto);
-  // }
+  @Get(':id')
+  async findOne(@Param('id') id: string, @Res() res: any) {
+    const song = await this.songService.readSong(id);
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.songService.remove(+id);
-  // }
+    return res
+      .status(HttpStatus.OK)
+      .json(song ?? { error: 'Not Found', message: 'Song not found' });
+  }
 }

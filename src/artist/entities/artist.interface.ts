@@ -1,5 +1,4 @@
 import { Document } from 'mongoose';
-import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 import { TimelineDTO } from '../../band/dto/timeline.dto';
 
 export interface IArtist {
@@ -13,10 +12,10 @@ export interface IArtist {
   endTemp: number;
   instruments: string[];
   roles: string[];
-  mainBand?: IEndpoint | null;
-  othersBands?: IEndpoint[];
+  mainBand?: string | null;
+  othersBands?: string[];
   timeline: TimelineDTO[];
-  discography: IEndpoint[];
+  discography: string[];
 }
 
 export interface IArtistDoc extends Omit<IArtist, 'id'>, Document {}

@@ -14,6 +14,8 @@ import { GenresSaver } from 'src/genres/helpers/genresSaver';
 import { ArtistSaver } from 'src/artist/helpers/artistsSaver';
 import { AlbumSaver } from 'src/album/helpers/albumSaver';
 import { ArtistService } from 'src/artist/artist.service';
+import { AlbumService } from 'src/album/album.service';
+import { AlbumDTO } from 'src/album/dto/album.dto';
 
 @Controller('band')
 export class BandController {
@@ -23,6 +25,7 @@ export class BandController {
     private artistHelper: ArtistSaver,
     private albumHelper: AlbumSaver,
     private artistService: ArtistService,
+    private albumService: AlbumService,
   ) {}
 
   @Post()
@@ -46,22 +49,42 @@ export class BandController {
 
     const bandSaved = await this.service.createBand(bandToSave);
 
-    const bandSavedEndpoint = {
-      id: bandSaved.id,
-      name: bandSaved.name,
-      endpoint: `/band/${bandSaved.id}`,
-    };
-
     members.forEach((member) => {
-      this.artistService.updateArtist(member.id, {
-        mainBand: bandSavedEndpoint,
+      this.artistService.updateArtist(member, {
+        mainBand: bandSaved._id,
       });
+    });
+
+    pastMembers.forEach((member) => {
+      this.artistService.patchBandsArtist(member, bandSaved._id);
+    });
+
+    discography.forEach((album) => {
+      this.albumService.updateAlbum(album, { band: bandSaved._id });
     });
 
     return res.status(HttpStatus.OK).json({
       messge: 'saved band',
       bandSaved,
     });
+  }
+
+  @Post('/album')
+  async create(@Body() albumDto: AlbumDTO, @Res() res: any) {
+    if (!albumDto.band && albumDto.band === '') {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        error: 'bad request',
+        messgae: 'The band Property is requires to save a alubum',
+      });
+    }
+
+    const albumSaved = await this.albumHelper.saveDiscography([albumDto]);
+
+    if (albumDto.band) {
+      await this.service.updateBandAlbums(albumDto.band, albumSaved[0]);
+    }
+
+    return res.status(HttpStatus.OK).json(albumDto);
   }
 
   @Get()

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 import { GenresSaver } from 'src/genres/helpers/genresSaver';
 import { TracklistSaver } from 'src/tracklist/helpers/tracklistSaver';
 import { AlbumService } from '../album.service';
@@ -12,7 +11,7 @@ export class AlbumSaver {
     private readonly tlHelper: TracklistSaver,
     private readonly genreHelper: GenresSaver,
   ) {}
-  async saveDiscography(discography: AlbumDTO[]): Promise<IEndpoint[]> {
+  async saveDiscography(discography: AlbumDTO[]): Promise<string[]> {
     const savedAlbums = discography.map(async (album) => {
       const track_list = await this.tlHelper.saveTracklist(album.track_list);
       const genres = await this.genreHelper.saveGenres(album.genres);
@@ -28,12 +27,6 @@ export class AlbumSaver {
 
     const savedAlbum = await this.albumService.createAlbums(albums);
 
-    return savedAlbum.map((album) => {
-      return {
-        id: album.id,
-        name: album.name,
-        endpoint: `/album/${album.id}`,
-      };
-    });
+    return savedAlbum.map((album) => album.id);
   }
 }

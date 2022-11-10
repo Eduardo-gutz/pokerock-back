@@ -1,5 +1,4 @@
 import { Document } from 'mongoose';
-import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 
 export interface IBand {
   id?: string;
@@ -9,10 +8,10 @@ export interface IBand {
   startTemp: number;
   endTemp: number;
   toPresent: boolean;
-  discography: IEndpoint[];
-  genres: IEndpoint[];
-  members: IEndpoint[];
-  pastMembers: IEndpoint[];
+  discography: string[];
+  genres: string[];
+  members: string[];
+  pastMembers: string[];
 }
 
 export interface IBandDoc extends Omit<IBand, 'id'>, Document {}

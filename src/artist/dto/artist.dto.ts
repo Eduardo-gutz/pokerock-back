@@ -1,6 +1,4 @@
-import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 import { AlbumDTO } from '../../album/dto/album.dto';
-import { BandDTO } from '../../band/dto/band.dto';
 import { TimelineDTO } from '../../band/dto/timeline.dto';
 
 export interface ArtistDTO {
@@ -14,8 +12,8 @@ export interface ArtistDTO {
   endTemp: number;
   instruments: string[];
   roles: string[];
-  mainBand: IEndpoint | null;
-  othersBands: IEndpoint[];
+  mainBand: string | null;
+  othersBands: string[];
   timeline: TimelineDTO[];
   discography: AlbumDTO[];
 }

@@ -10,7 +10,7 @@ export class ArtistSaver {
     private readonly albumHelper: AlbumSaver,
   ) {}
 
-  async saveMembers(members: ArtistDTO[]) {
+  async saveMembers(members: ArtistDTO[]): Promise<string[]> {
     const savedMembers = members.map(async (member) => {
       const discography = await this.albumHelper.saveDiscography(
         member.discography,
@@ -28,12 +28,6 @@ export class ArtistSaver {
 
     const membersSaved = await this.artistService.createArtists(member);
 
-    return membersSaved.map((artist) => {
-      return {
-        id: artist.id,
-        name: artist.name,
-        endpoint: `/artist/${artist.id}`,
-      };
-    });
+    return membersSaved.map((artist) => artist.id);
   }
 }

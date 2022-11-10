@@ -14,7 +14,8 @@ import { AlbumModule } from 'src/album/album.module';
     AlbumModule,
     MongooseModule.forFeature([{ name: 'Band', schema: BandSchema }]),
   ],
-  providers: [BandService],
   controllers: [BandController],
+  providers: [BandService],
+  exports: [BandService],
 })
 export class BandModule {}

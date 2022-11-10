@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IEndpoint } from 'src/common/interfaces/endpoint.interface';
 import { SongSaver } from 'src/song/helpers/saveSong';
 import { TrackListDTO } from '../dto/trackList.dto';
 import { TracklistService } from '../tracklist.service';
@@ -11,7 +10,7 @@ export class TracklistSaver {
     private readonly songHelper: SongSaver,
   ) {}
 
-  async saveTracklist(trackList: TrackListDTO[]): Promise<IEndpoint[]> {
+  async saveTracklist(trackList: TrackListDTO[]): Promise<string[]> {
     const tlWithSongsSaved = trackList.map(async (tl) => {
       const songs = await this.songHelper.saveSongList(tl.songs);
 
@@ -25,12 +24,6 @@ export class TracklistSaver {
 
     const tlSaved = await this.tracklistService.createTracklists(tls);
 
-    return tlSaved.map((tl) => {
-      return {
-        id: tl.id,
-        name: tl.version,
-        endpoint: `/song/${tl.id}`,
-      };
-    });
+    return tlSaved.map((tl) => tl.id);
   }
 }

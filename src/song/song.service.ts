@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SongDTO } from 'src/song/dto/song.dto';
@@ -41,5 +41,19 @@ export class SongService {
     });
 
     return await Promise.all(savedSongs);
+  }
+
+  async readASongs() {
+    if (!this.songs) await this.readAllSongs();
+
+    return this.songs ?? [];
+  }
+
+  async readArtist(id: string): Promise<ISong | null> {
+    const song = await this.songModel.findById(id);
+    if (!album) {
+      throw new NotFoundException();
+    }
+    return album;
   }
 }

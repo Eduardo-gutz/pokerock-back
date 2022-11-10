@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IBand, IBandDoc } from './interfaces/Band.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -18,5 +18,17 @@ export class BandService {
 
   async readBandById(id: string): Promise<IBandDoc | null> {
     return await this.bandModel.findById(id);
+  }
+
+  async updateBandAlbums(id: string, albumId: string) {
+    const band = await this.bandModel.findById(id);
+    if (!band) {
+      throw new NotFoundException();
+    }
+
+    band.discography = [...band.discography, albumId];
+    band.save();
+
+    return band;
   }
 }

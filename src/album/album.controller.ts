@@ -1,46 +1,50 @@
 import {
   Controller,
-  // Get,
-  Post,
-  Body,
+  Get,
+  // Post,
+  // Body,
   // Patch,
-  // Param,
+  Param,
+  Res,
+  HttpStatus,
   // Delete,
 } from '@nestjs/common';
+// import { BandService } from 'src/band/band.service';
 import { GenresSaver } from 'src/genres/helpers/genresSaver';
 import { TracklistSaver } from 'src/tracklist/helpers/tracklistSaver';
 import { AlbumService } from './album.service';
-import { AlbumDTO } from './dto/album.dto';
+// import { AlbumDTO } from './dto/album.dto';
 
 @Controller('album')
 export class AlbumController {
   constructor(
     private readonly albumService: AlbumService,
+    // private readonly bandService: BandService,
     private readonly tlHelper: TracklistSaver,
     private readonly genreHelper: GenresSaver,
   ) {}
 
-  @Post()
-  async create(@Body() albumDto: AlbumDTO) {
-    const track_list = await this.tlHelper.saveTracklist(albumDto.track_list);
-    const genres = await this.genreHelper.saveGenres(albumDto.genres);
+  @Get()
+  async findAll(@Res() res: any) {
+    const albums = await this.albumService.readAlbums();
 
-    return this.albumService.createAlbum({
-      ...albumDto,
-      track_list,
-      genres,
-    });
+    return res.status(HttpStatus.OK).json(
+      albums.map((album) => ({
+        id: album.id,
+        name: album.name,
+        endpoint: `/album/${album.id}`,
+      })),
+    );
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.albumService.findAll();
-  // }
+  @Get(':id')
+  async findOne(@Param('id') id: string, @Res() res: any) {
+    const album = await this.albumService.readAlbumById(id);
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.albumService.findOne(+id);
-  // }
+    return res
+      .status(HttpStatus.OK)
+      .json(album ?? { error: 'Not Found', message: 'Album not found' });
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {

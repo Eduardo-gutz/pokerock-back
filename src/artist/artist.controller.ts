@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
+import { AlbumDTO } from 'src/album/dto/album.dto';
 import { AlbumSaver } from 'src/album/helpers/albumSaver';
 import { ArtistService } from './artist.service';
 import { ArtistDTO } from './dto/artist.dto';
@@ -64,11 +65,29 @@ export class ArtistController {
     const artist = {
       ...createArtistDto,
       discography,
-      mainBand: null,
-      othersBands: [],
     };
 
     return this.artistService.createArtist(artist);
+  }
+
+  @Post('/album')
+  async createAlbum(@Body() albumDto: AlbumDTO, @Res() res: any) {
+    if (!albumDto.artists || albumDto.artists.length < 1) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        error: 'bad request',
+        messgae: 'The artist Property is requires to save a album',
+      });
+    }
+
+    const albumSaved = await this.albumHelper.saveDiscography([albumDto]);
+
+    if (albumDto.artists) {
+      albumDto.artists.forEach(async (artist) => {
+        await this.artistService.updateArtistAlbums(artist, albumSaved[0]);
+      });
+    }
+
+    return res.status(HttpStatus.OK).json(albumDto);
   }
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateArtistDto: ArtistDto) {

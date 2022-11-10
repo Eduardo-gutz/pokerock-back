@@ -7,32 +7,8 @@ export const BandSchema = new Schema({
   startTemp: Number,
   endTemp: Number,
   toPresent: Boolean,
-  discography: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
-  genres: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
-  members: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
-  pastMembers: [
-    {
-      id: String,
-      name: String,
-      endpoint: String,
-    },
-  ],
+  discography: [{ type: Schema.Types.ObjectId, ref: 'Album' }],
+  genres: [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
+  members: [{ type: Schema.Types.ObjectId, ref: 'Artist' }],
+  pastMembers: [{ type: Schema.Types.ObjectId, ref: 'Artist' }],
 });

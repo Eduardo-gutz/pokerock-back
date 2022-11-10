@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -46,5 +46,17 @@ export class TracklistService {
     });
 
     return await Promise.all(savedTracklists);
+  }
+
+  async addSongToTracklist(id: string, songId: string) {
+    const tl = await this.tracklistModel.findById(id);
+    if (!tl) {
+      throw new NotFoundException();
+    } else {
+      tl.songs = [...tl.songs, songId];
+      tl.save();
+
+      return tl;
+    }
   }
 }

@@ -3,6 +3,8 @@ import { TrackListDTO } from '../../tracklist/dto/trackList.dto';
 
 export interface AlbumDTO {
   id?: string;
+  band?: string;
+  artists?: string[];
   name: string;
   relase: string;
   recorder: string;
