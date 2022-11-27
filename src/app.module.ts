@@ -14,7 +14,9 @@ import { GenresController } from './genres/genres.controller';
   imports: [
     BandModule,
     GenresModule,
-    MongooseModule.forRoot('mongodb://localhost/bands'),
+    MongooseModule.forRoot(
+      'mongodb+srv://lalogutzfl19:MYuppKDpjYzwgHxH@cluster0.xrbheqq.mongodb.net/?retryWrites=true&w=majority',
+    ),
     ArtistModule,
     SongModule,
     AlbumModule,
