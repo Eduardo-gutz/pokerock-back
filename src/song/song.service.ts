@@ -49,11 +49,11 @@ export class SongService {
     return this.songs ?? [];
   }
 
-  async readArtist(id: string): Promise<ISong | null> {
+  async readSong(id: string): Promise<ISong | null> {
     const song = await this.songModel.findById(id);
-    if (!album) {
+    if (!song) {
       throw new NotFoundException();
     }
-    return album;
+    return song;
   }
 }

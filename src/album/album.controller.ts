@@ -1,28 +1,51 @@
 import {
   Controller,
   Get,
-  // Post,
-  // Body,
-  // Patch,
+  Post,
+  Body,
   Param,
   Res,
   HttpStatus,
-  // Delete,
 } from '@nestjs/common';
-// import { BandService } from 'src/band/band.service';
 import { GenresSaver } from 'src/genres/helpers/genresSaver';
-import { TracklistSaver } from 'src/tracklist/helpers/tracklistSaver';
+import { SongSaver } from 'src/song/helpers/saveSong';
+import { TrackListDTO } from 'src/tracklist/dto/trackList.dto';
+import { TracklistService } from 'src/tracklist/tracklist.service';
 import { AlbumService } from './album.service';
-// import { AlbumDTO } from './dto/album.dto';
 
 @Controller('album')
 export class AlbumController {
   constructor(
     private readonly albumService: AlbumService,
     // private readonly bandService: BandService,
-    private readonly tlHelper: TracklistSaver,
+    private readonly tlService: TracklistService,
     private readonly genreHelper: GenresSaver,
+    private readonly songHelper: SongSaver,
   ) {}
+
+  @Post()
+  async create(@Body() tracklistDto: TrackListDTO, @Res() res: any) {
+    if (!tracklistDto.albumId || tracklistDto.albumId === '') {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        error: 'bad request',
+        messgae: 'The albumid Property is required to save a tracklist',
+      });
+    }
+
+    const songs = await this.songHelper.saveSongList(tracklistDto.songs);
+
+    const tlSaved = await this.tlService.createTracklist({
+      ...tracklistDto,
+      songs,
+    });
+
+    await this.albumService.addTracklistToAlbum(
+      tracklistDto.albumId,
+      tlSaved.id,
+    );
+
+    return res.status(HttpStatus.OK).json(tlSaved);
+  }
 
   @Get()
   async findAll(@Res() res: any) {
