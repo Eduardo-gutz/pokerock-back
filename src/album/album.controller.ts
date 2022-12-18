@@ -6,7 +6,9 @@ import {
   Param,
   Res,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { GenresSaver } from 'src/genres/helpers/genresSaver';
 import { SongSaver } from 'src/song/helpers/saveSong';
 import { TrackListDTO } from 'src/tracklist/dto/trackList.dto';
@@ -23,6 +25,7 @@ export class AlbumController {
     private readonly songHelper: SongSaver,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() tracklistDto: TrackListDTO, @Res() res: any) {
     if (!tracklistDto.albumId || tracklistDto.albumId === '') {

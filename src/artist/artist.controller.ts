@@ -8,9 +8,11 @@ import {
   Res,
   HttpStatus,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { AlbumDTO } from 'src/album/dto/album.dto';
 import { AlbumSaver } from 'src/album/helpers/albumSaver';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ArtistService } from './artist.service';
 import { ArtistDTO } from './dto/artist.dto';
 
@@ -43,6 +45,7 @@ export class ArtistController {
       .json(artist ?? { error: 'Not Found', message: 'Artist not found' });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateArtist(
     @Param('id') id: string,
@@ -56,6 +59,7 @@ export class ArtistController {
       .json(artist ?? { error: 'Not Found', message: 'Artist not found' });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createArtistDto: ArtistDTO) {
     const discography = await this.albumHelper.saveDiscography(
@@ -70,6 +74,7 @@ export class ArtistController {
     return this.artistService.createArtist(artist);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/album')
   async createAlbum(@Body() albumDto: AlbumDTO, @Res() res: any) {
     if (!albumDto.artists || albumDto.artists.length < 1) {

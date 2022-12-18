@@ -6,6 +6,7 @@ import {
   Res,
   Get,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { BandService } from './band.service';
 import { BandDTO } from './dto/band.dto';
@@ -16,6 +17,7 @@ import { AlbumSaver } from 'src/album/helpers/albumSaver';
 import { ArtistService } from 'src/artist/artist.service';
 import { AlbumService } from 'src/album/album.service';
 import { AlbumDTO } from 'src/album/dto/album.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('band')
 export class BandController {
@@ -28,6 +30,7 @@ export class BandController {
     private albumService: AlbumService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async postNewBand(@Res() res: any, @Body() newBand: BandDTO) {
     const genres = await this.genreHelper.saveGenres(newBand.genres);
@@ -69,6 +72,7 @@ export class BandController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/album')
   async create(@Body() albumDto: AlbumDTO, @Res() res: any) {
     if (!albumDto.band && albumDto.band === '') {

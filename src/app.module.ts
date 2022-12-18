@@ -9,19 +9,25 @@ import { AlbumModule } from './album/album.module';
 import { TracklistModule } from './tracklist/tracklist.module';
 import { GenresModule } from './genres/genres.module';
 import { GenresController } from './genres/genres.controller';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     BandModule,
     GenresModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://lalogutzfl19:jXcNCRoGmOkQFqB8@cluster0.g42mbvi.mongodb.net/?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(process.env.MONGO ?? ''),
     ArtistModule,
     SongModule,
     AlbumModule,
     TracklistModule,
     GenresModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController, GenresController],
   providers: [AppService],

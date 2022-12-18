@@ -5,10 +5,12 @@ import {
   Body,
   Res,
   HttpStatus,
+  UseGuards,
   // Patch,
   // Param,
   // Delete,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SongDTO } from 'src/song/dto/song.dto';
 import { SongSaver } from 'src/song/helpers/saveSong';
 import { SongService } from 'src/song/song.service';
@@ -22,6 +24,7 @@ export class TracklistController {
     private readonly songService: SongService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('/song')
   async createSong(@Body() createSongDto: SongDTO, @Res() res: any) {
     if (!createSongDto.tracklistId || createSongDto.tracklistId === '') {

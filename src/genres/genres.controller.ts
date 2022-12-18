@@ -3,10 +3,12 @@ import {
   // Get,
   Post,
   Body,
+  UseGuards,
   // Patch,
   // Param,
   // Delete,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { GenreDTO } from './dto/genre.dto';
 import { GenreService } from './genres.service';
 
@@ -14,6 +16,7 @@ import { GenreService } from './genres.service';
 export class GenresController {
   constructor(private readonly genresService: GenreService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createGenreDto: GenreDTO) {
     return this.genresService.createGenre(createGenreDto);
