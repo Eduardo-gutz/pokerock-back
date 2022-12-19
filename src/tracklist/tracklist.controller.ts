@@ -10,7 +10,7 @@ import {
   // Param,
   // Delete,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { SongDTO } from 'src/song/dto/song.dto';
 import { SongSaver } from 'src/song/helpers/saveSong';
 import { SongService } from 'src/song/song.service';

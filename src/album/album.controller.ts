@@ -8,7 +8,7 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GenresSaver } from 'src/genres/helpers/genresSaver';
 import { SongSaver } from 'src/song/helpers/saveSong';
 import { TrackListDTO } from 'src/tracklist/dto/trackList.dto';

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AlbumDTO } from 'src/album/dto/album.dto';
 import { AlbumSaver } from 'src/album/helpers/albumSaver';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ArtistService } from './artist.service';
 import { ArtistDTO } from './dto/artist.dto';
 

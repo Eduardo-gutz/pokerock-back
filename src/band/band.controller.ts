@@ -17,7 +17,7 @@ import { AlbumSaver } from 'src/album/helpers/albumSaver';
 import { ArtistService } from 'src/artist/artist.service';
 import { AlbumService } from 'src/album/album.service';
 import { AlbumDTO } from 'src/album/dto/album.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('band')
 export class BandController {

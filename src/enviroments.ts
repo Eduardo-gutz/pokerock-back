@@ -4,5 +4,6 @@ dotenv.config();
 export default {
   port: process.env.PORT,
   secret: process.env.SECRET_KEY,
+  refreshToken: process.env.JWT_REFRESH_SECRET,
   mongo: process.env.MONGO,
 };

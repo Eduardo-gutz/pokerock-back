@@ -8,7 +8,7 @@ import {
   // Param,
   // Delete,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GenreDTO } from './dto/genre.dto';
 import { GenreService } from './genres.service';
 
